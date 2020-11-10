@@ -35,7 +35,10 @@ export default {
     }
 
     .sidebar{
-        width: 300px;
+        flex-basis: 300px;
         border-right: 2px solid silver ;
+        flex-grow: 0;
+        flex-shrink: 0;
     }
+    
 </style>

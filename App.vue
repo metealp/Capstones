@@ -5,25 +5,30 @@
         </template>
 
         <template v-slot:sidebar>
-            <div v-for="album in cdAlbumList" :key="album">
-                {{ album.id }}
-            </div>
+            <album v-for="album in cdAlbumList" :key="album.id" :album="album"
+            />
         </template>
 
         <template v-slot:content>
-            Content
+            <photo-card v-for="photo in cdPhotosList" :key="photo.id" :photo="photo"
+            />
         </template>
 
     </layout>
 </template>
 
 <script>
-import Layout from './Layout.vue'
-import { mapState } from 'vuex'
+import Layout from './Layout.vue';
+import Album from './Album.vue'
+import PhotoCard from './PhotoCard.vue'
+import { mapState } from 'vuex';
 
 export default {
     components: {
         Layout,
+        Album,
+        PhotoCard,
+    
     },
     async created() {
         await this.$store.dispatch('albumStore/fetchAlbums')
@@ -31,9 +36,14 @@ export default {
 
     computed: {
         cdAlbumList () {
-            console.log(this.$store.state.albumStore)
             return this.$store.state.albumStore.albumList
+        },
+        cdPhotosList (){
+            return this.$store.state.photoStore.photosList
         }
+        // ...mapState("albumStore", {
+        //     albumList: state => state.albumList
+        // })
     }
 }
 </script>
@@ -47,5 +57,6 @@ export default {
 body {
     margin: 0;
 }
+
 
 </style>
