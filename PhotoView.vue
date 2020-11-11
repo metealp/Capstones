@@ -1,7 +1,7 @@
 <template>
     <div>
-        <!-- <img v-for="photo in PhotosList" :key="photo.id" :src="photo.thumbnailUrl" alt=""> -->
-        Content
+        <!-- <h3> Content </h3> -->
+        <img v-for="photo in PhotosList" :key="photo.id" :src="photo.thumbnailUrl" alt="">
     </div>
 </template>
 
@@ -11,6 +11,9 @@ export default {
         PhotosList (){
             return this.$store.state.photoStore.photosList
         }
+    },
+    mounted () {
+        console.log(this.PhotosList)
     }
 
 }

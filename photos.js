@@ -3,24 +3,38 @@ export const photoStore = {
 
     state(){
         return {
-            photosList: []
+            photosList: [],
+            loading: false,
+            photoCache: {
+
+            }
         }
     },
 
     mutations: {
-        setPhotosList(state, payload){
-            state.photosList = payload
-            console.log(payload);
+        setPhotosList(state, {photos, albumId}){
+            state.photosList = photos
+            state.photoCache[albumId] = photos
+        },
+        setLoading(state, loading){
+            state.loading = loading;
         }
     },
 
     actions: {
-        async fetchPhotosForAlbum(ctx, { album }){
-            console.log(album);
+        async fetchPhotosForAlbum(ctx, { id }){
+            if(ctx.state.photoCache[id]){
+                ctx.commit("setPhotosList", {photos: ctx.state.photoCache[id], albumId: id})
+                return
+            }
+            ctx.commit('setLoading', true)
 
-            const res = await fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${album.id}`)
+            const res = await fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${id}`)
             const data = await res.json()
-            ctx.commit("setPhotosList", data)
+            ctx.commit("setPhotosList", {photos: data, albumId: id})
+
+            ctx.commit('setLoading', false)
+
         }
     },
 }
